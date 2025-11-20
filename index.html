@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prompts Companion – Think Before You Paste</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-branding">
+    <div class="brand-identity">
+      <div class="brand-logo" aria-hidden="true">PC</div>
+      <div>
+        <h1 class="brand-overline">Prompts Companion</h1>
+      </div>
+    </div>
+    <span class="brand-tagline">A shared prompt bank for intentional AI use</span>
+  </header>
+  <div class="app-shell">
+    <!-- Top slogans -->
+    <header class="top-header">
+      <div class="banner banner-main">
+        <span class="banner-label">Slogan</span>
+        <span class="banner-text">“Think before you paste”</span>
+      </div>
+      <div class="banner banner-secondary">
+        <span class="banner-label">Update</span>
+        <span class="banner-text">Latest announcements about your AI-assisted learning space.</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Left navigation -->
+      <aside class="sidebar">
+        <button class="nav-button active" data-view="dashboard">Dashboard</button>
+        <button class="nav-button" data-view="assignments">Assignment</button>
+        <button class="nav-button" data-view="community">Community</button>
+      </aside>
+
+      <!-- Main content area -->
+      <main class="main-content">
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="view active">
+          <div class="view-header">
+            <h1>Dashboard</h1>
+            <p class="view-subtitle">
+              Review how you used AI on each assignment, reflect on prompts, and decide which ones are worth sharing.
+            </p>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Assignment history list -->
+            <section class="panel history-panel">
+              <h2 class="panel-title">History</h2>
+              <p class="panel-subtitle">Click an assignment to see its prompt profile.</p>
+              <ul id="dashboard-assignment-list" class="assignment-list">
+                <!-- Filled by JavaScript -->
+              </ul>
+            </section>
+
+            <!-- Assignment profile -->
+            <section class="panel profile-panel">
+              <h2 class="panel-title">Your prompts profile for this assignment</h2>
+
+              <div id="dashboard-assignment-empty" class="placeholder">
+                Select an assignment on the left to see your study time, prompt history and a quick pie chart.
+              </div>
+
+              <div id="dashboard-assignment-content" class="profile-content hidden">
+                <div class="profile-header-row">
+                  <div class="badge">Studying time:
+                    <span id="dashboard-study-time"></span>
+                  </div>
+                  <div class="badge badge-soft" id="dashboard-assignment-name"></div>
+                </div>
+
+                <div class="profile-main">
+                  <div class="prompt-history-column">
+                    <h3 class="section-label">Prompt history</h3>
+                    <p class="section-hint">
+                      These are the prompts you used with the AI model for this assignment. Reflect or push them to the community.
+                    </p>
+                    <div id="dashboard-prompt-history" class="prompt-history-list">
+                      <!-- Filled by JavaScript -->
+                    </div>
+                    <div id="dashboard-no-prompts" class="placeholder small hidden">
+                      No prompts recorded for this assignment yet.
+                    </div>
+                    <div class="small-summary" id="dashboard-recommend-summary">
+                      <!-- Filled by JavaScript -->
+                    </div>
+                  </div>
+
+                  <div class="chart-column">
+                    <h3 class="section-label">Prompt feature breakdown</h3>
+                    <p class="section-hint">
+                      Quick overview of how often you used explanation, summary, comparison and other prompt types.
+                    </p>
+                    <div class="chart-wrapper">
+                      <svg id="prompt-pie-chart" viewBox="0 0 220 220" aria-label="Prompt feature pie chart"></svg>
+                      <ul id="prompt-pie-legend" class="chart-legend"></ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ASSIGNMENTS VIEW -->
+        <section id="view-assignments" class="view">
+          <div class="view-header">
+            <h1>Assignments</h1>
+            <p class="view-subtitle">
+              Work on your assignments with an AI thinking partner. Use recommended prompts from the community and see how they feel.
+            </p>
+          </div>
+
+          <div class="assignments-grid">
+            <!-- Assignment content only (selection via side drawer) -->
+            <section class="panel assignment-content-panel">
+              <div class="panel-header-row">
+                <div>
+                  <h2 class="panel-title">Current assignment</h2>
+                  <p class="panel-subtitle">
+                    Click “Change” to choose an assignment, then draft your response on the left and chat with the AI on the right.
+                  </p>
+                </div>
+                <button id="open-assignment-picker" class="btn-small-secondary">Change</button>
+              </div>
+
+              <div class="assignment-content-window">
+                <h3 id="assignment-current-title" class="content-title">Select an assignment to get started</h3>
+                <p id="assignment-current-desc" class="content-desc">
+                  When you pick an assignment, you will see the task description here and can jot down notes or draft answers.
+                </p>
+                <textarea id="assignment-notes" class="content-textarea" placeholder="Your notes or draft for this assignment..."></textarea>
+              </div>
+            </section>
+
+            <!-- AI chat panel -->
+            <section class="panel assignment-chat-panel">
+              <div class="panel-header-row">
+                <div>
+                  <h2 class="panel-title">AI model</h2>
+                  <p class="panel-subtitle">
+                    Use prompts from the community or your own, then adjust them to keep yourself in charge of the thinking.
+                  </p>
+                </div>
+                <div class="chat-header-actions">
+                  <button id="chat-clear" class="btn-small-secondary">Clear chat</button>
+                  <span class="badge badge-soft">Demo only – no real backend</span>
+                </div>
+              </div>
+
+              <div id="assignment-chat-log" class="chat-log">
+                <!-- Messages -->
+              </div>
+
+              <div id="prompt-suggestions" class="prompt-suggestions hidden">
+                <!-- Suggestions + preview built by JavaScript -->
+              </div>
+
+              <div class="chat-input-row">
+                <textarea
+                  id="chat-prompt-input"
+                  class="chat-input"
+                  placeholder="Type a prompt for the AI... recommendations will appear, Enter to send, Shift+Enter for a new line."
+                  autocomplete="off"
+                ></textarea>
+                <button id="chat-send" class="btn-primary">Send</button>
+              </div>
+
+              <p class="chat-hint">
+                Try starting with a recommended prompt, then editing it in your own words before sending.
+              </p>
+            </section>
+          </div>
+        </section>
+
+        <!-- COMMUNITY VIEW -->
+        <section id="view-community" class="view">
+          <div class="view-header">
+            <h1>Prompt community</h1>
+            <p class="view-subtitle">
+              This is a shared prompt bank where teacher- and student-designed prompts are collected, rated and reused.
+            </p>
+          </div>
+
+          <section class="panel">
+            <div class="panel-header-row">
+              <div>
+                <h2 class="panel-title">Prompt bank</h2>
+                <p class="panel-subtitle">
+                  Prompts pushed from dashboards and assignments appear here. You can filter, rate and comment on them.
+                </p>
+              </div>
+            </div>
+
+            <div class="filters-row">
+              <div class="field">
+                <label for="community-filter-subject">Subject</label>
+                <select id="community-filter-subject">
+                  <option value="all">All subjects</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="community-filter-function">Function</label>
+                <select id="community-filter-function">
+                  <option value="all">All functions</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="community-filter-scenario">Scenario</label>
+                <select id="community-filter-scenario">
+                  <option value="all">All scenarios</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="community-filter-source">Prompt source</label>
+                <select id="community-filter-source">
+                  <option value="all">All sources</option>
+                  <option value="seed">Seed prompts</option>
+                  <option value="assignment">From assignments</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="community-prompt-list" class="prompt-list">
+              <!-- Filled by JavaScript -->
+            </div>
+            <div id="community-empty" class="placeholder hidden">
+              No prompts in the bank yet. Push a few from your assignment dashboard to see them here.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal for prompt reflection (Dashboard prompt history) -->
+  <div id="prompt-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <header class="modal-header">
+        <h2>Reflect on this prompt</h2>
+        <button id="modal-close" class="modal-close" aria-label="Close">✕</button>
+      </header>
+      <main class="modal-body">
+        <p id="modal-prompt-text" class="modal-prompt-text"></p>
+
+        <label for="modal-reflection" class="modal-label">Your thoughts about using this prompt</label>
+        <textarea
+          id="modal-reflection"
+          class="modal-textarea"
+          placeholder="For example: When did this prompt help you think more deeply? When did it become too leading?"
+        ></textarea>
+
+        <label class="modal-label">How useful was this prompt for learning?</label>
+        <div class="rating-row">
+          <span class="rating-option">
+            <input type="radio" name="modal-rating" value="1" id="rating-1" />
+            <label for="rating-1">1</label>
+          </span>
+          <span class="rating-option">
+            <input type="radio" name="modal-rating" value="2" id="rating-2" />
+            <label for="rating-2">2</label>
+          </span>
+          <span class="rating-option">
+            <input type="radio" name="modal-rating" value="3" id="rating-3" />
+            <label for="rating-3">3</label>
+          </span>
+          <span class="rating-option">
+            <input type="radio" name="modal-rating" value="4" id="rating-4" />
+            <label for="rating-4">4</label>
+          </span>
+          <span class="rating-option">
+            <input type="radio" name="modal-rating" value="5" id="rating-5" />
+            <label for="rating-5">5</label>
+          </span>
+        </div>
+      </main>
+      <footer class="modal-footer">
+        <button id="modal-save" class="btn-primary">Save reflection</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Modal for pushing a prompt to the community -->
+  <div id="push-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <header class="modal-header">
+        <h2>Push prompt to community</h2>
+        <button id="push-modal-close" class="modal-close" aria-label="Close">✕</button>
+      </header>
+      <main class="modal-body">
+        <p id="push-modal-text" class="modal-prompt-text"></p>
+
+        <label for="push-modal-title" class="modal-label">Prompt title</label>
+        <input id="push-modal-title" class="modal-input" type="text" placeholder="Give this prompt a short title" />
+
+        <label class="modal-label">Select tags</label>
+        <div class="tag-category-grid">
+          <div class="tag-category">
+            <label for="push-subject-select" class="modal-label">Subject</label>
+            <select id="push-subject-select" class="modal-input"></select>
+          </div>
+          <div class="tag-category">
+            <label for="push-function-select" class="modal-label">Function</label>
+            <select id="push-function-select" class="modal-input"></select>
+          </div>
+          <div class="tag-category">
+            <label for="push-scenario-select" class="modal-label">Scenario</label>
+            <select id="push-scenario-select" class="modal-input"></select>
+          </div>
+        </div>
+        <div class="add-tag-row">
+          <button id="push-add-tag" class="btn-small-secondary" type="button">Add a tag</button>
+        </div>
+        <div id="push-add-tag-form" class="add-tag-form hidden">
+          <label for="push-new-tag-name" class="modal-label">Tag name</label>
+          <input
+            id="push-new-tag-name"
+            class="modal-input"
+            type="text"
+            placeholder="e.g., Biology or Lab practice"
+          />
+          <label for="push-new-tag-category" class="modal-label">This tag belongs to</label>
+          <select id="push-new-tag-category" class="modal-input">
+            <option value="">Select a category</option>
+            <option value="subjects">Subject</option>
+            <option value="functions">Function</option>
+            <option value="scenarios">Scenario</option>
+          </select>
+          <div class="add-tag-actions">
+            <button id="push-add-tag-cancel" class="btn-small-secondary" type="button">Cancel</button>
+            <button id="push-add-tag-save" class="btn-primary" type="button">Save tag</button>
+          </div>
+          <p id="push-add-tag-error" class="modal-error hidden" role="alert"></p>
+        </div>
+        <p class="modal-hint">Choose or create tags that match the community subjects, functions and scenarios.</p>
+
+        <label for="push-modal-rationale" class="modal-label">Why this prompt?</label>
+        <textarea
+          id="push-modal-rationale"
+          class="modal-textarea"
+          placeholder="Let others know when to use this prompt or what makes it powerful."
+        ></textarea>
+
+        <p id="push-modal-error" class="modal-error hidden" role="alert"></p>
+      </main>
+      <footer class="modal-footer">
+        <button id="push-modal-cancel" class="btn-small-secondary" type="button">Cancel</button>
+        <button id="push-modal-submit" class="btn-primary" type="button">Push prompt</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Side drawer for picking an assignment (Assignments view) -->
+  <div id="assignment-picker" class="side-drawer hidden">
+    <div id="assignment-picker-backdrop" class="side-drawer-backdrop"></div>
+    <div class="side-drawer-panel">
+      <header class="assignment-picker-header">
+        <h2>Select assignment</h2>
+        <button id="assignment-picker-close" class="side-drawer-close" aria-label="Close">✕</button>
+      </header>
+      <p class="picker-hint">
+        Choose which assignment you are currently working on. You can switch at any time.
+      </p>
+      <ul id="assignment-picker-list" class="assignment-list assignment-picker-list">
+        <!-- Filled by JavaScript -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
