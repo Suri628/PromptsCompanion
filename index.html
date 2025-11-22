@@ -48,19 +48,42 @@
             </p>
           </div>
 
-          <div class="dashboard-grid">
+          <div class="dashboard-grid" id="dashboard-grid">
             <!-- Assignment history list -->
-            <section class="panel history-panel">
-              <h2 class="panel-title">History</h2>
-              <p class="panel-subtitle">Click an assignment to see its prompt profile.</p>
-              <ul id="dashboard-assignment-list" class="assignment-list">
-                <!-- Filled by JavaScript -->
-              </ul>
+            <section class="panel history-panel" id="history-panel">
+              <div class="history-header-row">
+                <h2 class="panel-title">History</h2>
+                <button id="history-dock-btn" class="btn-icon" aria-label="Toggle history panel">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="history-tabs">
+                <button class="history-tab active" data-tab="assignments">Assignments</button>
+                <button class="history-tab" data-tab="monthly">Monthly</button>
+              </div>
+
+              <!-- Tab: Assignments -->
+              <div id="history-content-assignments" class="history-tab-content active">
+                <p class="panel-subtitle">Click an assignment to see its prompt profile.</p>
+                <ul id="dashboard-assignment-list" class="assignment-list">
+                  <!-- Filled by JavaScript -->
+                </ul>
+              </div>
+
+              <!-- Tab: Monthly -->
+              <div id="history-content-monthly" class="history-tab-content hidden">
+                <div class="monthly-list">
+                  <button class="assignment-item active" style="width: 100%; justify-content: flex-start;">November</button>
+                </div>
+              </div>
             </section>
 
             <!-- Assignment profile -->
             <section class="panel profile-panel">
-              <h2 class="panel-title">Your prompts profile for this assignment</h2>
+              <h2 class="panel-title" id="profile-panel-title">Your prompts profile for this assignment</h2>
 
               <div id="dashboard-assignment-empty" class="placeholder">
                 Select an assignment on the left to see your study time, prompt history and a quick pie chart.
@@ -97,8 +120,47 @@
                       Quick overview of how often you used explanation, summary, comparison and other prompt types.
                     </p>
                     <div class="chart-wrapper">
-                      <svg id="prompt-pie-chart" viewBox="0 0 220 220" aria-label="Prompt feature pie chart"></svg>
+                      <img id="prompt-history-img" src="./figures/history.png" alt="Prompt history visualization" class="hidden" style="width: 100%; height: auto; border-radius: 8px;">
                       <ul id="prompt-pie-legend" class="chart-legend"></ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- New Section: Prompt Analysis -->
+                <div id="dashboard-prompt-analysis" class="prompt-analysis-section hidden">
+                  <h3 class="section-label" style="margin-top: 16px;">Prompt analysis</h3>
+                  <div class="analysis-grid">
+                    <!-- Filled by JavaScript -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content: Monthly Profile -->
+              <div id="dashboard-monthly-content" class="profile-content hidden">
+                <div class="monthly-profile-layout">
+                  <div class="monthly-header-img">
+                    <img src="./figures/monthly.png" alt="Monthly usage profile" style="max-width: 100%; border-radius: 12px; margin-bottom: 16px;">
+                  </div>
+                  <div class="monthly-stats-grid">
+                    <div class="stat-item">
+                      <h3>Direct answer</h3>
+                      <p>You often asked AI for quick answers, reaching 40%. This is efficient, but it may mean you’re relying on AI instead of thinking through problems yourself. Try mixing in more reasoning-based prompts to strengthen your own understanding.</p>
+                    </div>
+                    <div class="stat-item">
+                      <h3>Explanation</h3>
+                      <p>30% of your prompts were asking AI to explain concepts. This shows curiosity and a desire to understand. To deepen your learning, try explaining ideas in your own words first before checking with AI.</p>
+                    </div>
+                    <div class="stat-item">
+                      <h3>Summary</h3>
+                      <p>You used AI to summarize information 15% of the time. This helps manage long readings, but summarizing key points yourself before asking AI can improve comprehension and memory.</p>
+                    </div>
+                    <div class="stat-item">
+                      <h3>Visualization</h3>
+                      <p>10% of your prompts were for charts, diagrams, or visual explanations. Visualizing ideas can help you understand complex topics more clearly.</p>
+                    </div>
+                    <div class="stat-item">
+                      <h3>Comparison</h3>
+                      <p>You used comparison prompts only 5% of the time. Comparing ideas is a strong way to build critical thinking. Trying more comparison prompts can help you evaluate perspectives and make stronger decisions in your learning.</p>
                     </div>
                   </div>
                 </div>
@@ -149,7 +211,6 @@
                 </div>
                 <div class="chat-header-actions">
                   <button id="chat-clear" class="btn-small-secondary">Clear chat</button>
-                  <span class="badge badge-soft">Demo only – no real backend</span>
                 </div>
               </div>
 

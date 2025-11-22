@@ -440,6 +440,11 @@ function renderDashboardDetail() {
   const noPromptsEl = document.getElementById("dashboard-no-prompts");
   const summaryEl = document.getElementById("dashboard-recommend-summary");
 
+  // Elements for Assignment 1 specific view
+  const historyImg = document.getElementById("prompt-history-img");
+  const analysisSection = document.getElementById("dashboard-prompt-analysis");
+  const analysisGrid = analysisSection.querySelector(".analysis-grid");
+
   const assignment = findAssignmentById(currentDashboardAssignmentId);
 
   if (!assignment) {
@@ -506,98 +511,86 @@ function renderDashboardDetail() {
     summaryEl.textContent = "";
   }
 
-  renderPieChartForAssignment(assignment);
-}
+  // Handle Assignment specific views
+  if (assignment.id === "a1") {
+    // Assignment 1: History Essay
+    if (historyImg) {
+      historyImg.src = "./figures/history.png";
+      historyImg.alt = "History prompt analysis";
+      historyImg.classList.remove("hidden");
+      historyImg.onload = adjustHistoryListHeight;
+    }
 
-// ---------- PIE CHART ----------
+    if (analysisSection && analysisGrid) {
+      analysisSection.classList.remove("hidden");
+      analysisGrid.innerHTML = `
+        <div class="stat-item">
+          <h3>Factcheck</h3>
+          <p>You asked AI for basic historical facts 35% of the time. This is helpful for quick fact-checking, but relying too much on facts may keep you at the surface level. Try adding more interpretative questions to deepen your understanding.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Source Analysis</h3>
+          <p>20% of your prompts analyzed primary sources or explored bias.This is strong historical thinking.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Comparison</h3>
+          <p>Last month, only 10% of your prompts involved comparing events, leaders, or time periods. Comparison is essential in history because it helps you see patterns and make judgments.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Background Research</h3>
+          <p>25% of your prompts involved searching for background information, key figures, timelines, or context. This shows you are actively gathering information to understand the overall situation.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Argument Building</h3>
+          <p>10% of your prompts focused on forming arguments or exploring counterarguments. This skill is essential for essays and historical interpretation. Using more argument-based prompts can help you craft stronger, more original ideas.</p>
+        </div>
+      `;
+    }
+  } else if (assignment.id === "a2") {
+    // Assignment 2: Science Report
+    if (historyImg) {
+      historyImg.src = "./figures/science.png";
+      historyImg.alt = "Science prompt analysis";
+      historyImg.classList.remove("hidden");
+      historyImg.onload = adjustHistoryListHeight;
+    }
 
-const featureColors = {
-  Explain: "#4f81bd",
-  Summarize: "#c0504d",
-  Compare: "#9bbb59",
-  Brainstorm: "#8064a2",
-  Reflect: "#f2b705",
-  Other: "#7f7f7f"
-};
-
-function renderPieChartForAssignment(assignment) {
-  const svg = document.getElementById("prompt-pie-chart");
-  const legend = document.getElementById("prompt-pie-legend");
-  svg.innerHTML = "";
-  legend.innerHTML = "";
-
-  if (!assignment || !assignment.promptsUsed || assignment.promptsUsed.length === 0) {
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", "50%");
-    text.setAttribute("y", "50%");
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("dominant-baseline", "middle");
-    text.setAttribute("fill", "#5b7384");
-    text.setAttribute("font-size", "12");
-    text.textContent = "No prompt data yet";
-    svg.appendChild(text);
-    return;
+    if (analysisSection && analysisGrid) {
+      analysisSection.classList.remove("hidden");
+      analysisGrid.innerHTML = `
+        <div class="stat-item">
+          <h3>Analysis</h3>
+          <p>test text</p>
+        </div>
+      `;
+    }
+  } else {
+    // Default view: Hide image, hide analysis
+    if (historyImg) historyImg.classList.add("hidden");
+    if (analysisSection) analysisSection.classList.add("hidden");
   }
-
-  // Count features
-  const counts = {};
-  assignment.promptsUsed.forEach((p) => {
-    const key = featureColors[p.feature] ? p.feature : "Other";
-    counts[key] = (counts[key] || 0) + 1;
-  });
-
-  const entries = Object.entries(counts);
-  const total = entries.reduce((sum, [, v]) => sum + v, 0);
-
-  const cx = 110;
-  const cy = 110;
-  const r = 80;
-
-  let currentAngle = -Math.PI / 2;
-
-  entries.forEach(([feature, value]) => {
-    const fraction = value / total;
-    const angle = fraction * Math.PI * 2;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + angle;
-    currentAngle = endAngle;
-
-    const x1 = cx + r * Math.cos(startAngle);
-    const y1 = cy + r * Math.sin(startAngle);
-    const x2 = cx + r * Math.cos(endAngle);
-    const y2 = cy + r * Math.sin(endAngle);
-    const largeArc = angle > Math.PI ? 1 : 0;
-
-    const pathData = [
-      `M ${cx} ${cy}`,
-      `L ${x1} ${y1}`,
-      `A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`,
-      "Z"
-    ].join(" ");
-
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", pathData);
-    path.setAttribute("fill", featureColors[feature] || featureColors.Other);
-    path.setAttribute("stroke", "#ffffff");
-    path.setAttribute("stroke-width", "1");
-    svg.appendChild(path);
-
-    const li = document.createElement("li");
-    li.className = "chart-legend-item";
-
-    const swatch = document.createElement("span");
-    swatch.className = "chart-color-swatch";
-    swatch.style.background = featureColors[feature] || featureColors.Other;
-
-    const label = document.createElement("span");
-    const pct = Math.round((fraction * 100 * 10) / 10);
-    label.textContent = `${feature} – ${pct}%`;
-
-    li.appendChild(swatch);
-    li.appendChild(label);
-    legend.appendChild(li);
-  });
+  
+  // Adjust height after render (for non-image cases or cached images)
+  setTimeout(adjustHistoryListHeight, 50);
 }
+
+function adjustHistoryListHeight() {
+  const chartWrapper = document.querySelector(".chart-wrapper");
+  const historyList = document.getElementById("dashboard-prompt-history");
+  
+  if (chartWrapper && historyList) {
+    const height = chartWrapper.offsetHeight;
+    if (height > 0) {
+      historyList.style.maxHeight = `${height}px`;
+    } else {
+      historyList.style.maxHeight = '230px'; // Fallback
+    }
+  }
+}
+
+window.addEventListener('resize', adjustHistoryListHeight);
+
+
 
 // ---------- MODAL REFLECTION (Dashboard) ----------
 
@@ -1439,9 +1432,26 @@ function renderCommunity() {
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "prompt-actions";
-    actionsRow.innerHTML = `<span>⭐ ${p.helpfulCount || 0} helpful votes</span><span>${
-      p.source || ""
-    }</span>`;
+    
+    const ratingsWrapper = document.createElement("div");
+    ratingsWrapper.className = "ratings-wrapper";
+
+    const communityRating = document.createElement("span");
+    communityRating.className = "community-rating";
+    // Demo logic: random rating between 4.0 and 5.0
+    const randomRating = (4 + Math.random()).toFixed(1);
+    communityRating.textContent = `⭐ ${randomRating} community rating`;
+    ratingsWrapper.appendChild(communityRating);
+
+    const ratingContainer = createStarRating(p.id, p.helpfulCount || 0);
+    ratingsWrapper.appendChild(ratingContainer);
+
+    actionsRow.appendChild(ratingsWrapper);
+
+    const sourceSpan = document.createElement("span");
+    sourceSpan.textContent = p.source || "";
+    actionsRow.appendChild(sourceSpan);
+
     main.appendChild(actionsRow);
 
     card.appendChild(main);
@@ -1477,6 +1487,39 @@ function renderCommunity() {
   });
 }
 
+function createStarRating(promptId, currentRating) {
+  const container = document.createElement("div");
+  container.className = "star-rating";
+  container.title = "Rate this prompt";
+
+  for (let i = 1; i <= 5; i++) {
+    const star = document.createElement("span");
+    star.className = "star";
+    star.innerHTML = "★"; // or use SVG
+    if (i <= currentRating) {
+      star.classList.add("filled");
+    }
+    
+    star.addEventListener("click", (e) => {
+      e.stopPropagation();
+      ratePrompt(promptId, i);
+    });
+
+    container.appendChild(star);
+  }
+
+  return container;
+}
+
+function ratePrompt(promptId, rating) {
+  const prompt = communityPrompts.find((p) => p.id === promptId);
+  if (prompt) {
+    prompt.helpfulCount = rating;
+    saveCommunity();
+    renderCommunity();
+  }
+}
+
 function setupCommunityFilters() {
   const subjectFilter = document.getElementById("community-filter-subject");
   const funcFilter = document.getElementById("community-filter-function");
@@ -1486,6 +1529,74 @@ function setupCommunityFilters() {
   [subjectFilter, funcFilter, scenarioFilter, sourceFilter].forEach((el) => {
     el.addEventListener("change", renderCommunity);
   });
+}
+
+function setupDashboardInteractions() {
+  // History Tabs
+  const tabs = document.querySelectorAll(".history-tab");
+  const tabContents = document.querySelectorAll(".history-tab-content");
+  const assignmentContent = document.getElementById("dashboard-assignment-content");
+  const assignmentEmpty = document.getElementById("dashboard-assignment-empty");
+  const monthlyContent = document.getElementById("dashboard-monthly-content");
+  const profileTitle = document.getElementById("profile-panel-title");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      // Toggle active tab
+      tabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      const target = tab.dataset.tab;
+
+      // Toggle left panel content
+      tabContents.forEach((content) => {
+        if (content.id === `history-content-${target}`) {
+          content.classList.remove("hidden");
+          content.classList.add("active");
+        } else {
+          content.classList.add("hidden");
+          content.classList.remove("active");
+        }
+      });
+
+      // Toggle right panel content
+      if (target === "monthly") {
+        assignmentContent.classList.add("hidden");
+        assignmentEmpty.classList.add("hidden");
+        monthlyContent.classList.remove("hidden");
+        if (profileTitle) profileTitle.textContent = "Your prompts profile for this month";
+      } else {
+        // Assignments tab
+        monthlyContent.classList.add("hidden");
+        if (currentDashboardAssignmentId) {
+          assignmentContent.classList.remove("hidden");
+        } else {
+          assignmentEmpty.classList.remove("hidden");
+        }
+        if (profileTitle) profileTitle.textContent = "Your prompts profile for this assignment";
+      }
+    });
+  });
+
+  // Dockable History Panel
+  const dockBtn = document.getElementById("history-dock-btn");
+  const historyPanel = document.getElementById("history-panel");
+  const dashboardGrid = document.getElementById("dashboard-grid");
+
+  if (dockBtn && historyPanel && dashboardGrid) {
+    dockBtn.addEventListener("click", () => {
+      historyPanel.classList.toggle("collapsed");
+      dashboardGrid.classList.toggle("history-collapsed");
+      
+      // Update icon rotation or change icon if needed (optional)
+      const svg = dockBtn.querySelector("svg");
+      if (historyPanel.classList.contains("collapsed")) {
+        svg.style.transform = "rotate(180deg)";
+      } else {
+        svg.style.transform = "rotate(0deg)";
+      }
+    });
+  }
 }
 
 // ---------- INITIALIZATION ----------
@@ -1501,6 +1612,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupChat();
   setupAssignmentPicker();
   setupCommunityFilters();
+  setupDashboardInteractions();
 
   // Dashboard
   currentDashboardAssignmentId = assignments[0]?.id || null;
