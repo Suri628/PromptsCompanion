@@ -13,8 +13,8 @@ const initialAssignments = [
       {
         id: "a1p1",
         text:
-          "Give me two different viewpoints on this event and explain the strengths and weaknesses of each. Then ask me one question that will help me decide which view I find more convincing.",
-        feature: "Compare",
+          "Give me a quick timeline of events leading up to World War II. Make as bullet points",
+        feature: "Factcheck",
         reflection: "",
         rating: null,
         pushedToCommunity: false
@@ -22,8 +22,8 @@ const initialAssignments = [
       {
         id: "a1p2",
         text:
-          "Can you explain this concept in a simpler way so that I could teach it to a younger student in our class?",
-        feature: "Explain",
+          "Here’s a source from World War II. What point of view might the author have, then ask me what evidence I noticed myself.",
+        feature: "Source Analysis",
         reflection: "",
         rating: null,
         pushedToCommunity: false
@@ -31,8 +31,26 @@ const initialAssignments = [
       {
         id: "a1p3",
         text:
-          "Ask me three questions that will test whether I truly understand the causes and consequences of this event.",
-        feature: "Reflect",
+          "How are imperialism in Africa and imperialism in Asia similar? How are they different? And what’s different between my writing, what I need to improve?",
+        feature: "Comparison",
+        reflection: "",
+        rating: null,
+        pushedToCommunity: false
+      },
+      {
+        id: "a1p4",
+        text:
+          "Provide a short timeline of the Industrial Revolution and give me the detailed information to explain.",
+        feature: "Background Research",
+        reflection: "",
+        rating: null,
+        pushedToCommunity: false
+      },
+      {
+        id: "a1p5",
+        text:
+          "Provide counterarguments to the claim that the Treaty of Versailles caused WWII.",
+        feature: "Argument Building",
         reflection: "",
         rating: null,
         pushedToCommunity: false
@@ -50,8 +68,8 @@ const initialAssignments = [
       {
         id: "a2p1",
         text:
-          "Show me a real-world example where this science concept could be applied and explain it step by step.",
-        feature: "Explain",
+          "Explain the difference between ionic and covalent bonds in a clear way so I can use it in my chemistry essay introduction.",
+        feature: "Concept Explanation",
         reflection: "",
         rating: null,
         pushedToCommunity: false
@@ -59,8 +77,35 @@ const initialAssignments = [
       {
         id: "a2p2",
         text:
-          "Help me brainstorm three different ways to visualize this idea for a middle school audience.",
-        feature: "Brainstorm",
+          "Help me design an experiment to test how temperature affects enzyme activity. Include variables, materials, and safety notes.",
+        feature: "Experiment Design",
+        reflection: "",
+        rating: null,
+        pushedToCommunity: false
+      },
+      {
+        id: "a2p3",
+        text:
+          "Show me how to approach difficult multi-step physics problems and break them into smaller parts. This is my question: A 1200 kg car travels up a 10° incline. The engine provides a forward driving force of 3500 N. Resistive forces total 900 N. Gravity is 9.8 m/s². What is the car’s acceleration up the slope?",
+        feature: "Problem Solving",
+        reflection: "",
+        rating: null,
+        pushedToCommunity: false
+      },
+      {
+        id: "a2p4",
+        text:
+          "Explain the trend in this enzyme activity graph and ask me why the reaction rate changes.",
+        feature: "Data Analyze",
+        reflection: "",
+        rating: null,
+        pushedToCommunity: false
+      },
+      {
+        id: "a2p5",
+        text:
+          "Explain how Newton’s laws apply to car safety so I can add real-world examples to my essay.",
+        feature: "Application",
         reflection: "",
         rating: null,
         pushedToCommunity: false
@@ -559,8 +604,24 @@ function renderDashboardDetail() {
       analysisSection.classList.remove("hidden");
       analysisGrid.innerHTML = `
         <div class="stat-item">
-          <h3>Analysis</h3>
-          <p>test text</p>
+          <h3>Concept Explanation</h3>
+          <p>Last month, 50% of your science prompts asked AI to explain concepts. This shows you rely on AI to understand new ideas, which helps build a strong base. To deepen your thinking, try explaining the concept yourself first, then ask AI to check or extend your thinking.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Experiment Design</h3>
+          <p>Last month, 20% of your prompts focused on designing science experiments. This is great scientific thinking, but AI’s answers can be inaccurate. When designing the experiment, you must be careful to avoid common mistakes or check its reliability, and you must also verify it with your teacher or a reliable source.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Problem Solving</h3>
+          <p>15% of your prompts asked for step-by-step solutions to physics or chemistry problems. This helps you understand the process, but remember this is not the final answer.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Data Analyze</h3>
+          <p>10% of your prompts analyzed graphs, tables, or experiment results. Interpreting scientific data is important for exams and labs. But it becomes even more powerful when you make the first observation before asking the AI.</p>
+        </div>
+        <div class="stat-item">
+          <h3>Application</h3>
+          <p>Last month, only 5% of your prompts showed that you explored how science connects with real-life problems. Trying to connect more with real-world problems can help you understand scientific knowledge in a deeper and more meaningful way.</p>
         </div>
       `;
     }

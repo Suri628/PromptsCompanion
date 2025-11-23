@@ -378,10 +378,11 @@ body {
 .btn-small-secondary {
   border-radius: 999px;
   border: none;
-  padding: 4px 8px;
+  padding: 4px 12px;
   font-size: 0.78rem;
   cursor: pointer;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .btn-small {
@@ -393,6 +394,7 @@ body {
   background: #d2e5f5;
   color: #254667;
 }
+
 
 .btn-small:hover,
 .btn-small-secondary:hover {

@@ -207,13 +207,20 @@
             <section class="panel assignment-chat-panel">
               <div class="panel-header-row">
                 <div>
-                  <h2 class="panel-title">AI model</h2>
+                  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 2px;">
+                    <h2 class="panel-title" style="margin: 0;">AI model</h2>
+                    <select id="ai-model-select" style="padding: 2px 6px; font-size: 0.85rem; border-radius: 6px; border: 1px solid #cad8e4; background-color: #ffffff; color: #143040; width: 150px;">
+                      <option value="chatgpt">ChatGPT - 5.1</option>
+                      <option value="gemini">Gemini 3.0 Pro</option>
+                      <option value="claude">Claude 4.5 Sonnet</option>
+                    </select>
+                  </div>
                   <p class="panel-subtitle">
                     Use prompts from the community or your own, then adjust them to keep yourself in charge of the thinking.
                   </p>
                 </div>
                 <div class="chat-header-actions">
-                  <button id="chat-clear" class="btn-small-secondary">Clear chat</button>
+                  <button id="chat-clear" class="btn-small-secondary">Clear Chat</button>
                 </div>
               </div>
 
